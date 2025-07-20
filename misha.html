@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="styles-misha.css">
+</head>
+<body>
+    
+    </head>
+    <body>
+      <header>
+        <div>Logo</div>
+        <nav>
+          <a href="#">Главная</a>
+          <a href="#">О Приложении</a>
+          <a href="#">Планировщик</a>
+        </nav>
+      </header>
+      <div class="container">
+        <h1>Моё расписание на неделю</h1>
+        <div class="days" id="days">
+          <div class="day" data-day="Понедельник">Понедельник</div>
+          <div class="day" data-day="Вторник">Вторник</div>
+          <div class="day" data-day="Среда">Среда</div>
+          <div class="day" data-day="Четверг">Четверг</div>
+          <div class="day" data-day="Пятница">Пятница</div>
+          <div class="day" data-day="Суббота">Суббота</div>
+          <div class="day" data-day="Воскресенье">Воскресенье</div>
+        </div>
+        <textarea id="taskInput" placeholder="Введите задачу..."></textarea>
+        <button id="submitBtn">Отправить</button>
+        <div class="tasks" id="tasks"></div>
+      </div>
+    
+      <script>
+        const days = document.querySelectorAll('.day');
+        let activeDay = null;
+        const tasksContainer = document.getElementById('tasks');
+        const submitBtn = document.getElementById('submitBtn');
+        const taskInput = document.getElementById('taskInput');
+    
+        const tasks = {};
+    
+        days.forEach(day => {
+          day.addEventListener('click', () => {
+            days.forEach(d => d.classList.remove('active'));
+            day.classList.add('active');
+            activeDay = day.dataset.day;
+            renderTasks();
+          });
+        });
+    
+        submitBtn.addEventListener('click', () => {
+          if (!activeDay) {
+            alert('Выберите день недели!');
+            return;
+          }
+          const taskText = taskInput.value.trim();
+          if (!taskText) return;
+          if (!tasks[activeDay]) tasks[activeDay] = [];
+          tasks[activeDay].push(taskText);
+          taskInput.value = '';
+          renderTasks();
+        });
+    
+        function renderTasks() {
+          tasksContainer.innerHTML = '';
+          if (activeDay && tasks[activeDay]) {
+            tasks[activeDay].forEach(t => {
+              const taskEl = document.createElement('div');
+              taskEl.className = 'task';
+              taskEl.innerText = t;
+              tasksContainer.appendChild(taskEl);
+            });
+          }
+        }
+      </script>
+    </body>
+
+</html>
